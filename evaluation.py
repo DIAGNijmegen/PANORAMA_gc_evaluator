@@ -1,178 +1,217 @@
-import json
-from pathlib import Path
-from typing import Any, Dict, List
+"""
+The following is a simple example evaluation method.
 
-from evalutils import ClassificationEvaluation
-from evalutils.io import SimpleITKLoader
-from evalutils.validators import NumberOfCasesValidator
+It is meant to run within a container.
+
+To run it locally, you can call the following bash script:
+
+  ./test_run.sh
+
+This will start the evaluation, reads from ./test/input and outputs to ./test/output
+
+To save the container and prep it for upload to Grand-Challenge.org you can call:
+
+  ./save.sh
+
+Any container that shows the same behavior will do, this is purely an example of how one COULD do it.
+
+Happy programming!
+"""
+import json
+from glob import glob
+import SimpleITK
+import random
+from multiprocessing import Pool
+from statistics import mean
+from pathlib import Path
+from pprint import pformat, pprint
+import os
+>>>>>>> master
 from picai_eval import evaluate
 from picai_eval.data_utils import sterilize
 
 
-def load_predictions_json(path: Path) -> Dict[str, str]:
-    """
-    Map prediction filenames to original filenames
-    See https://grand-challenge.org/documentation/automated-evaluation-2/
-    """
-    detection_map_pk_to_subject_id = {}
-
-    with open(path, "r") as f:
-        entries = json.load(f)
-
-    if isinstance(entries, float):
-        raise TypeError(f"entries of type float for file: {path}")
-
-    for entry in entries:
-        # Find case name through input file name
-        subject_id = None
-        for input in entry["inputs"]:
-            if input["interface"]["slug"] == "transverse-t2-prostate-mri":
-                filename = str(input["image"]["name"])
-                subject_id = filename.split("_t2w")[0]
-                break
-        if subject_id is None:
-            raise ValueError(f"No filename found for entry: {entry}")
-
-        # Find output value for this case
-        for output in entry["outputs"]:
-            if output["interface"]["slug"] == "cspca-detection-map":
-                pk = str(output["image"]["pk"])
-                if not pk.endswith(".mha"):
-                    pk += ".mha"
-                detection_map_pk_to_subject_id[pk] = subject_id
-
-    return detection_map_pk_to_subject_id
+INPUT_DIRECTORY = Path("/input")
+OUTPUT_DIRECTORY = Path("/output")
+GROUND_TRUTH_DIRECTORY = Path("ground_truth")
+# INPUT_DIRECTORY = Path("/home/pidgeotto/natalia/PANORAMA_evaluation/test/input")
+# OUTPUT_DIRECTORY = Path("/home/pidgeotto/natalia/PANORAMA_evaluation/test/output")
+# GROUND_TRUTH_DIRECTORY = Path("/home/pidgeotto/natalia/PANORAMA_evaluation/ground_truth")
 
 
-class PICAILoader(SimpleITKLoader):
-    """
-    Custom file loader for PI-CAI input/output interfaces.
-    Skips directories and JSON files during prediction exploration.
-    Otherwise, it continues as usual.
-    """
+def main():
+    print_inputs()
 
-    def load(self, *, fname: Path) -> List[Dict[str, Any]]:
-        if fname.is_dir() or fname.suffix == ".json":
-            # skip directories and JSON files
-            return []
+    metrics = {}
+    predictions = read_predictions()
 
-        return super().load(fname=fname)
+    # We now process each algorithm job for this submission
+    # Note that the jobs are not in any order!
+    # We work that out from predictions.json
 
-    @staticmethod
-    def load_case_pred(fname: Path) -> float:
-        with open(fname) as fp:
-            return float(json.load(fp))
+    # Start a number of process workers, using multiprocessing
+    # The optimal number of workers ultimately depends on how many
+    # resources each process() would call upon
+
+    # with Pool(processes=4) as pool:
+    #     metrics["results"] = pool.map(process, predictions)
+
+    # Now generate an overall score(s) for this submission
+    # metrics["aggregates"] = {
+    #     "my_metric": mean(result["my_metric"] for result in metrics["results"])
+    # }
+
+    metrics["aggregates"] = panorama_process(predictions)
+
+    # Make sure to save the metrics
+    write_metrics(metrics=metrics)
+
+    return 0
 
 
-class picai_gc_evaluator(ClassificationEvaluation):
-    def __init__(self):
-        super().__init__(
-            file_loader=PICAILoader(),
-            validators=[
-                NumberOfCasesValidator(num_cases=100),
-            ],
-            file_sorter_key=lambda fname: fname.stem,
+def panorama_process(predictions):
+    case_pred = {}
+    pred_paths = []
+    gt_paths = []
+    subject_list = []
+
+    for job in predictions:
+
+        location_pdac_likelihood = get_file_location(
+            job_pk=job["pk"],
+            values=job["outputs"],
+            slug="pdac-likelihood",
         )
 
-    def score(self) -> None:
-        """
-        The evaluation of PI-CAI leverages the picai_eval repository, which implements
-        a different way to aggregate than evalutils. Therefore, we override `score`
-        instead of `score_case` and `score_aggregates`.
-        """
-        # collect list of annotation paths and prediction paths
-        gt_paths, pred_paths, subject_list, case_pred = [], [], [], {}
-        for (_, gt_row), (_, pred_row) in zip(
-            self._ground_truth_cases.iterrows(),
-            self._predictions_cases.iterrows()
-        ):
-            # check DataFrames are aligned correctly
-            assert pred_row.ground_truth_path == gt_row.path, \
-                f"Order mismatch gt & pred DataFrames! {pred_row.ground_truth_path} != {gt_row.path}"
+        location_pdac_detection_map = get_file_location(
+                job_pk=job["pk"],
+                values=job["outputs"],
+                slug="pdac-detection-map",
+        )
+        pdac_detection_map_file = glob(str(location_pdac_detection_map / "*.mha"))[0]
 
-            # Check that they're the right images
-            if (self._file_loader.hash_image(self._file_loader.load_image(gt_row.path)) != gt_row["hash"] or
-                    self._file_loader.hash_image(self._file_loader.load_image(pred_row.path)) != pred_row["hash"]):
-                raise RuntimeError("Images do not match")
-
-            # grab paths and store
-            gt_paths += [gt_row.path]
-            pred_paths += [pred_row.path]
-            subject_list += [pred_row.subject_id]
-
-            # collect case-level csPCa predictions
-            case_pred[pred_row.subject_id] = pred_row.cspca_case_level_likelihood
-
-        # perform evaluation
-        metrics = evaluate(
-            y_det=pred_paths,
-            y_true=gt_paths,
-            subject_list=subject_list,
+        image_name_venous_phase_ct_scan = get_image_name(
+            values=job["inputs"],
+            slug="venous-phase-ct-scan",
         )
 
-        # overwrite default case-level prediction derivation with user-defined one
-        metrics.case_pred = case_pred
+        result_pdac_likelihood = load_json_file(location=location_pdac_likelihood)
 
-        # store metrics (and add to_dict() conversion to metrics)
-        metrics.to_dict = lambda: sterilize(metrics.minimal_dict())
-        self._case_results = metrics
-        self._aggregate_results = {
-            "score": metrics.score,
-            "auroc": metrics.auroc,
-            "AP": metrics.AP,
-            "lesion_TPR_at_FPR_0.1": float(metrics.lesion_TPR_at_FPR(0.1)),
-            "lesion_TPR_at_FPR_0.2": float(metrics.lesion_TPR_at_FPR(0.2)),
-            "lesion_TPR_at_FPR_0.3": float(metrics.lesion_TPR_at_FPR(0.3)),
-            "lesion_TPR_at_FPR_0.4": float(metrics.lesion_TPR_at_FPR(0.4)),
-            "lesion_TPR_at_FPR_0.5": float(metrics.lesion_TPR_at_FPR(0.5)),
-            "lesion_TPR_at_FPR_1.0": float(metrics.lesion_TPR_at_FPR(1.0)),
-            "lesion_TPR_at_FPR_5.0": float(metrics.lesion_TPR_at_FPR(5.0)),
-            "num_cases": metrics.num_cases,
-            "num_lesions": metrics.num_lesions,
-            "picai_eval_version": metrics.version,
-        }
-        print("Evaluation succeeded.")
+        subject_id = image_name_venous_phase_ct_scan.split('_0000.mha')[0]
 
-    def load(self):
-        """Define custom load function for T2 algorithm submissions"""
-        # read which predictions and ground truths are available
-        self._ground_truth_cases = self._load_cases(
-            folder=self._ground_truth_path)
-        self._predictions_cases = self._load_cases(
-            folder=self._predictions_path)
+        ground_trut_path = str(GROUND_TRUTH_DIRECTORY / (subject_id + '.nii.gz'))
 
-        # parse predictions.json to create mapping between predictions and gt
-        self.mapping_dict = load_predictions_json(
-            Path("/input/predictions.json"))
+        print('subject_id', subject_id)
+        print('location_pdac_likelihood', location_pdac_likelihood)
+        print('result_pdac_likelihood', result_pdac_likelihood)
+        print('location_pdac_detection_map', pdac_detection_map_file)
 
-        # set subject_id of predictions
-        self._predictions_cases["subject_id"] = self._predictions_cases.apply(
-            lambda row: self.mapping_dict[Path(row.path).name],
-            axis=1
-        )
 
-        # set case-level predictions
-        self._predictions_cases["cspca_case_level_likelihood"] = self._predictions_cases.apply(
-            lambda row: self._file_loader.load_case_pred(
-                Path(row.path).parent.parent.parent / "cspca-case-level-likelihood.json"
-            ),
-            axis=1
-        )
+        gt_paths += [ground_trut_path]
+        pred_paths += [pdac_detection_map_file]
+        subject_list += [subject_id]
+        case_pred[subject_id] = result_pdac_likelihood
 
-        # set corresponding ground truth path
-        self._predictions_cases["ground_truth_path"] = self._predictions_cases.apply(
-            lambda row: self._ground_truth_path / (row.subject_id + ".nii.gz"),
-            axis=1
-        )
+    print('Performing evaluation')
+    print('pred_paths', pred_paths)
+    print('gt_paths', gt_paths)
+    print('subject_list', subject_list)
 
-        # sort predictions and annotations DataFrames in the same way
-        self._ground_truth_cases = self._ground_truth_cases.sort_values(
-            "path"
-        ).reset_index(drop=True)
-        self._predictions_cases = self._predictions_cases.sort_values(
-            "ground_truth_path"
-        ).reset_index(drop=True)
+    # perform evaluation
+    metrics = evaluate(
+        y_det=pred_paths,
+        y_true=gt_paths,
+        subject_list=subject_list,
+        y_true_postprocess_func=lambda lbl: (lbl == 1).astype(int)
+    )
+    print('Computing Metrics')
+    # overwrite default case-level prediction derivation with user-defined one
+    metrics.case_pred = case_pred
+    print('Metrics done')
+    print(metrics.case_pred)
+
+    # store metrics (and add to_dict() conversion to metrics)
+    metrics.to_dict = lambda: sterilize(metrics.minimal_dict())
+    #self._case_results = metrics
+    aggregate_results = {
+        "score": 0.1,
+        "auroc": 0.1,
+        "AP": 0.1,
+        "lesion_TPR_at_FPR_0.1": 0.1,
+        "lesion_TPR_at_FPR_0.2": 0.1,
+        "lesion_TPR_at_FPR_0.3": 0.1,
+        "lesion_TPR_at_FPR_0.4": 0.1,
+        "lesion_TPR_at_FPR_0.5": 0.1,
+        "lesion_TPR_at_FPR_1.0": 0.1,
+        "lesion_TPR_at_FPR_5.0": 0.1,
+        "num_cases": metrics.num_cases,
+        "num_lesions": metrics.num_lesions,
+        "picai_eval_version": metrics.version,
+    }
+    print("Evaluation succeeded.")
+
+    return aggregate_results
+
+
+def print_inputs():
+    # Just for convenience, in the logs you can then see what files you have to work with
+    input_files = [str(x) for x in Path(INPUT_DIRECTORY).rglob("*") if x.is_file()]
+
+    print("Input Files:")
+    pprint(input_files)
+    print("")
+
+
+def read_predictions():
+    # The prediction file tells us the location of the users' predictions
+    with open(INPUT_DIRECTORY / "predictions.json") as f:
+        return json.loads(f.read())
+
+
+def get_image_name(*, values, slug):
+    # This tells us the user-provided name of the input or output image
+    for value in values:
+        if value["interface"]["slug"] == slug:
+            return value["image"]["name"]
+
+    raise RuntimeError(f"Image with interface {slug} not found!")
+
+
+def get_interface_relative_path(*, values, slug):
+    # Gets the location of the interface relative to the input or output
+    for value in values:
+        if value["interface"]["slug"] == slug:
+            return value["interface"]["relative_path"]
+
+    raise RuntimeError(f"Value with interface {slug} not found!")
+
+
+def get_file_location(*, job_pk, values, slug):
+    # Where a job's output file will be located in the evaluation container
+    relative_path = get_interface_relative_path(values=values, slug=slug)
+    return INPUT_DIRECTORY / job_pk / "output" / relative_path
+
+
+def load_json_file(*, location):
+    # Reads a json file
+    with open(location) as f:
+        return json.loads(f.read())
+
+
+def load_image_file(*, location):
+    # Use SimpleITK to read a file
+    input_files = glob(str(location / "*.tiff")) + glob(str(location / "*.mha"))
+    result = SimpleITK.ReadImage(input_files[0])
+
+    # Convert it to a Numpy array
+    return SimpleITK.GetArrayFromImage(result)
+
+
+def write_metrics(*, metrics):
+    # Write a json document used for ranking results on the leaderboard
+    with open(OUTPUT_DIRECTORY / "metrics.json", "w") as f:
+        f.write(json.dumps(metrics, indent=4))
 
 
 if __name__ == "__main__":
-    picai_gc_evaluator().evaluate()
+    raise SystemExit(main())

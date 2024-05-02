@@ -1,0 +1,143 @@
+[
+    {
+        "pk": "6cc36358-5c91-48d5-b3b2-0fe5c139ae8e",
+        "inputs": [
+            {
+                "file": null,
+                "image": {
+                    "name": "101381_00001_0000.mha"
+                },
+                "value": null,
+                "interface": {
+                    "slug": "venous-phase-ct-scan",
+                    "kind": "Image",
+                    "super_kind": "Image",
+                    "relative_path": "images/venous-ct"
+                }
+            }
+        ],
+        "outputs": [
+            {
+                "file": "https://grand-challenge.org/media/some-link/pdac-likelihood.json",
+                "image": null,
+                "value": null,
+                "interface": {
+                    "slug": "pdac-likelihood",
+                    "kind": "Float",
+                    "super_kind": "File",
+                    "relative_path": "pdac-likelihood.json"
+                }
+            },
+            {
+                "file": null,
+                "image": {
+                    "name": "3a733850-5755-44a4-a850-8931abc1dd9a.mha"
+                },
+                "value": null,
+                "interface": {
+                    "slug": "pdac-detection-map",
+                    "kind": "Heat Map",
+                    "super_kind": "Image",
+                    "relative_path": "images/pdac-detection-map"
+                }
+            }
+        ],
+        "status": "Succeeded",
+        "started_at": "2023-11-29T10:31:25.691799Z",
+        "completed_at": "2023-11-29T10:31:50.691799Z"
+    },
+    {
+        "pk": "836239bd-b2c2-4277-af00-0a3b0397c78a",
+        "inputs": [
+            {
+                "file": null,
+                "image": {
+                    "name": "100036_00001_0000.mha"
+                },
+                "value": null,
+                "interface": {
+                    "slug": "venous-phase-ct-scan",
+                    "kind": "Image",
+                    "super_kind": "Image",
+                    "relative_path": "images/venous-ct"
+                }
+            }
+        ],
+        "outputs": [
+            {
+                "file": "https://grand-challenge.org/media/some-link/pdac-likelihood.json",
+                "image": null,
+                "value": null,
+                "interface": {
+                    "slug": "pdac-likelihood",
+                    "kind": "Float",
+                    "super_kind": "File",
+                    "relative_path": "pdac-likelihood.json"
+                }
+            },
+            {
+                "file": null,
+                "image": {
+                    "name": "ab4375dc-7738-4d91-9d20-4a6e3729fb18.mha"
+                },
+                "value": null,
+                "interface": {
+                    "slug": "pdac-detection-map",
+                    "kind": "Heat Map",
+                    "super_kind": "Image",
+                    "relative_path": "images/pdac-detection-map"
+                }
+            }
+        ],
+        "status": "Succeeded",
+        "started_at": "2023-11-29T10:31:25.691799Z",
+        "completed_at": "2023-11-29T10:31:50.691799Z"
+    },
+    {
+        "pk": "f403b80b-324a-4f62-9a35-d438f340036a",
+        "inputs": [
+            {
+                "file": null,
+                "image": {
+                    "name": "100433_00001_0000.mha"
+                },
+                "value": null,
+                "interface": {
+                    "slug": "venous-phase-ct-scan",
+                    "kind": "Image",
+                    "super_kind": "Image",
+                    "relative_path": "images/venous-ct"
+                }
+            }
+        ],
+        "outputs": [
+            {
+                "file": "https://grand-challenge.org/media/some-link/pdac-likelihood.json",
+                "image": null,
+                "value": null,
+                "interface": {
+                    "slug": "pdac-likelihood",
+                    "kind": "Float",
+                    "super_kind": "File",
+                    "relative_path": "pdac-likelihood.json"
+                }
+            },
+            {
+                "file": null,
+                "image": {
+                    "name": "3ab593de-38ba-4638-a588-0d96c902ae8e.mha"
+                },
+                "value": null,
+                "interface": {
+                    "slug": "pdac-detection-map",
+                    "kind": "Heat Map",
+                    "super_kind": "Image",
+                    "relative_path": "images/pdac-detection-map"
+                }
+            }
+        ],
+        "status": "Succeeded",
+        "started_at": "2023-11-29T10:31:25.691799Z",
+        "completed_at": "2023-11-29T10:31:50.691799Z"
+    }
+]
