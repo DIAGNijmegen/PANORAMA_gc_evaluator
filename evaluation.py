@@ -26,40 +26,23 @@ from statistics import mean
 from pathlib import Path
 from pprint import pformat, pprint
 import os
->>>>>>> master
 from picai_eval import evaluate
 from picai_eval.data_utils import sterilize
 
 
+# INPUT_DIRECTORY = Path("/mnt/c/users/nataliaalves/PANORAMA_gc_evaluator/test/input")
+# OUTPUT_DIRECTORY = Path("/mnt/c/users/nataliaalves/PANORAMA_gc_evaluator/test/output")
+# GROUND_TRUTH_DIRECTORY = Path("/mnt/c/users/nataliaalves/PANORAMA_gc_evaluator/ground_truth")
+
 INPUT_DIRECTORY = Path("/input")
 OUTPUT_DIRECTORY = Path("/output")
 GROUND_TRUTH_DIRECTORY = Path("ground_truth")
-# INPUT_DIRECTORY = Path("/home/pidgeotto/natalia/PANORAMA_evaluation/test/input")
-# OUTPUT_DIRECTORY = Path("/home/pidgeotto/natalia/PANORAMA_evaluation/test/output")
-# GROUND_TRUTH_DIRECTORY = Path("/home/pidgeotto/natalia/PANORAMA_evaluation/ground_truth")
-
 
 def main():
     print_inputs()
 
     metrics = {}
     predictions = read_predictions()
-
-    # We now process each algorithm job for this submission
-    # Note that the jobs are not in any order!
-    # We work that out from predictions.json
-
-    # Start a number of process workers, using multiprocessing
-    # The optimal number of workers ultimately depends on how many
-    # resources each process() would call upon
-
-    # with Pool(processes=4) as pool:
-    #     metrics["results"] = pool.map(process, predictions)
-
-    # Now generate an overall score(s) for this submission
-    # metrics["aggregates"] = {
-    #     "my_metric": mean(result["my_metric"] for result in metrics["results"])
-    # }
 
     metrics["aggregates"] = panorama_process(predictions)
 
@@ -97,7 +80,7 @@ def panorama_process(predictions):
 
         result_pdac_likelihood = load_json_file(location=location_pdac_likelihood)
 
-        subject_id = image_name_venous_phase_ct_scan.split('_0000.mha')[0]
+        subject_id = image_name_venous_phase_ct_scan.split('_0000.nii.gz')[0]
 
         ground_trut_path = str(GROUND_TRUTH_DIRECTORY / (subject_id + '.nii.gz'))
 
@@ -122,7 +105,9 @@ def panorama_process(predictions):
         y_det=pred_paths,
         y_true=gt_paths,
         subject_list=subject_list,
-        y_true_postprocess_func=lambda lbl: (lbl == 1).astype(int)
+        y_true_postprocess_func=lambda lbl: (lbl == 1).astype(int),
+        num_parallel_calls = 1,
+        verbose= 1
     )
     print('Computing Metrics')
     # overwrite default case-level prediction derivation with user-defined one
@@ -134,16 +119,11 @@ def panorama_process(predictions):
     metrics.to_dict = lambda: sterilize(metrics.minimal_dict())
     #self._case_results = metrics
     aggregate_results = {
-        "score": 0.1,
-        "auroc": 0.1,
-        "AP": 0.1,
-        "lesion_TPR_at_FPR_0.1": 0.1,
-        "lesion_TPR_at_FPR_0.2": 0.1,
-        "lesion_TPR_at_FPR_0.3": 0.1,
-        "lesion_TPR_at_FPR_0.4": 0.1,
-        "lesion_TPR_at_FPR_0.5": 0.1,
-        "lesion_TPR_at_FPR_1.0": 0.1,
-        "lesion_TPR_at_FPR_5.0": 0.1,
+        "auroc": metrics.auroc,
+        "AP": metrics.AP,
+        "lesion_TPR_at_FPR_01": float(metrics.lesion_TPR_at_FPR(0.01)),
+        "lesion_TPR_at_FPR_001": float(metrics.lesion_TPR_at_FPR(0.001)),
+        "lesion_TPR_at_FPR_0001": float(metrics.lesion_TPR_at_FPR(0.0001)),
         "num_cases": metrics.num_cases,
         "num_lesions": metrics.num_lesions,
         "picai_eval_version": metrics.version,

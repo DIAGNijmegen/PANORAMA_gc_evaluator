@@ -4,7 +4,7 @@
 set -e
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-DOCKER_TAG="example-evaluation-development-phase-dummy"
+DOCKER_TAG="panorama-evaluation"
 DOCKER_NOOP_VOLUME="${DOCKER_TAG}-volume"
 
 INPUT_DIR="${SCRIPT_DIR}/test/input"
@@ -40,6 +40,8 @@ echo "=+= Doing an evaluation"
 docker volume create "$DOCKER_NOOP_VOLUME"
 docker run --rm \
     --platform=linux/amd64 \
+    -m 32g \
+    --memory-swap 32g \
     --network none \
     --gpus all \
     --volume "$INPUT_DIR":/input:ro \

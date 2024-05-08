@@ -1,143 +1,464 @@
 [
-    {
-        "pk": "6cc36358-5c91-48d5-b3b2-0fe5c139ae8e",
-        "inputs": [
-            {
-                "file": null,
-                "image": {
-                    "name": "101381_00001_0000.mha"
-                },
-                "value": null,
-                "interface": {
-                    "slug": "venous-phase-ct-scan",
-                    "kind": "Image",
-                    "super_kind": "Image",
-                    "relative_path": "images/venous-ct"
-                }
-            }
-        ],
-        "outputs": [
-            {
-                "file": "https://grand-challenge.org/media/some-link/pdac-likelihood.json",
-                "image": null,
-                "value": null,
-                "interface": {
-                    "slug": "pdac-likelihood",
-                    "kind": "Float",
-                    "super_kind": "File",
-                    "relative_path": "pdac-likelihood.json"
-                }
-            },
-            {
-                "file": null,
-                "image": {
-                    "name": "3a733850-5755-44a4-a850-8931abc1dd9a.mha"
-                },
-                "value": null,
-                "interface": {
-                    "slug": "pdac-detection-map",
-                    "kind": "Heat Map",
-                    "super_kind": "Image",
-                    "relative_path": "images/pdac-detection-map"
-                }
-            }
-        ],
-        "status": "Succeeded",
-        "started_at": "2023-11-29T10:31:25.691799Z",
-        "completed_at": "2023-11-29T10:31:50.691799Z"
-    },
-    {
-        "pk": "836239bd-b2c2-4277-af00-0a3b0397c78a",
-        "inputs": [
-            {
-                "file": null,
-                "image": {
-                    "name": "100036_00001_0000.mha"
-                },
-                "value": null,
-                "interface": {
-                    "slug": "venous-phase-ct-scan",
-                    "kind": "Image",
-                    "super_kind": "Image",
-                    "relative_path": "images/venous-ct"
-                }
-            }
-        ],
-        "outputs": [
-            {
-                "file": "https://grand-challenge.org/media/some-link/pdac-likelihood.json",
-                "image": null,
-                "value": null,
-                "interface": {
-                    "slug": "pdac-likelihood",
-                    "kind": "Float",
-                    "super_kind": "File",
-                    "relative_path": "pdac-likelihood.json"
-                }
-            },
-            {
-                "file": null,
-                "image": {
-                    "name": "ab4375dc-7738-4d91-9d20-4a6e3729fb18.mha"
-                },
-                "value": null,
-                "interface": {
-                    "slug": "pdac-detection-map",
-                    "kind": "Heat Map",
-                    "super_kind": "Image",
-                    "relative_path": "images/pdac-detection-map"
-                }
-            }
-        ],
-        "status": "Succeeded",
-        "started_at": "2023-11-29T10:31:25.691799Z",
-        "completed_at": "2023-11-29T10:31:50.691799Z"
-    },
-    {
-        "pk": "f403b80b-324a-4f62-9a35-d438f340036a",
-        "inputs": [
-            {
-                "file": null,
-                "image": {
-                    "name": "100433_00001_0000.mha"
-                },
-                "value": null,
-                "interface": {
-                    "slug": "venous-phase-ct-scan",
-                    "kind": "Image",
-                    "super_kind": "Image",
-                    "relative_path": "images/venous-ct"
-                }
-            }
-        ],
-        "outputs": [
-            {
-                "file": "https://grand-challenge.org/media/some-link/pdac-likelihood.json",
-                "image": null,
-                "value": null,
-                "interface": {
-                    "slug": "pdac-likelihood",
-                    "kind": "Float",
-                    "super_kind": "File",
-                    "relative_path": "pdac-likelihood.json"
-                }
-            },
-            {
-                "file": null,
-                "image": {
-                    "name": "3ab593de-38ba-4638-a588-0d96c902ae8e.mha"
-                },
-                "value": null,
-                "interface": {
-                    "slug": "pdac-detection-map",
-                    "kind": "Heat Map",
-                    "super_kind": "Image",
-                    "relative_path": "images/pdac-detection-map"
-                }
-            }
-        ],
-        "status": "Succeeded",
-        "started_at": "2023-11-29T10:31:25.691799Z",
-        "completed_at": "2023-11-29T10:31:50.691799Z"
-    }
+  {
+    "pk": "05c0bc43-0975-437b-8202-b63c47044453",
+    "url": "https://grand-challenge.org/algorithms/baseline-panorama/jobs/05c0bc43-0975-437b-8202-b63c47044453/",
+    "inputs": [
+      {
+        "pk": 1896226,
+        "file": null,
+        "image": {
+          "pk": "15ebcfcd-e65e-4b33-b5da-ae6a5aa2a1aa",
+          "name": "100433_00001_0000.nii.gz"
+        },
+        "value": null,
+        "interface": {
+          "pk": 103,
+          "kind": "Image",
+          "slug": "venous-phase-ct-scan",
+          "title": "Venous phase CT scan",
+          "super_kind": "Image",
+          "description": "A contrast-enhanced CT scan in the venous phase and axial reconstruction",
+          "default_value": null,
+          "look_up_table": null,
+          "relative_path": "images/venous-ct",
+          "overlay_segments": []
+        }
+      }
+    ],
+    "status": "Succeeded",
+    "api_url": "https://grand-challenge.org/api/v1/algorithms/jobs/05c0bc43-0975-437b-8202-b63c47044453/",
+    "outputs": [
+      {
+        "pk": 1908003,
+        "file": "https://grand-challenge.org/media/components/componentinterfacevalue/1d/23/1908003/pdac-likelihood.json",
+        "image": null,
+        "value": null,
+        "interface": {
+          "pk": 474,
+          "kind": "Float",
+          "slug": "pdac-likelihood",
+          "title": "PDAC Likelihood",
+          "super_kind": "File",
+          "description": "This indicates the likelihood of pancreatic ductal adenocarcinoma (PDAC) occurring, presented as a value between 0.0 and 1.0.",
+          "default_value": null,
+          "look_up_table": null,
+          "relative_path": "pdac-likelihood.json",
+          "overlay_segments": []
+        }
+      },
+      {
+        "pk": 1908004,
+        "file": null,
+        "image": {
+          "pk": "f48130d0-eca3-41f1-8b1d-b5643e04818c",
+          "name": "detection_map.mha"
+        },
+        "value": null,
+        "interface": {
+          "pk": 475,
+          "kind": "Heat Map",
+          "slug": "pdac-detection-map",
+          "title": "PDAC Detection Map",
+          "super_kind": "Image",
+          "description": "Single-class, detection map of pancreatic ductal adenocarcinoma (PDAC) in 3D, where each voxel represents a floating point in range [0,1]",
+          "default_value": null,
+          "look_up_table": null,
+          "relative_path": "images/pdac-detection-map",
+          "overlay_segments": []
+        }
+      }
+    ],
+    "started_at": "2024-05-08T05:55:09.917108Z",
+    "completed_at": "2024-05-08T06:05:32.827108Z",
+    "view_content": {},
+    "algorithm_image": "Algorithm image a793f46f-17ec-4e2e-a68e-40832c100986 for Baseline PANORAMA (Baseline v0.4)",
+    "hanging_protocol": null,
+    "rendered_result_text": "",
+    "optional_hanging_protocols": []
+  },
+  {
+    "pk": "4f0b681f-fc2e-4c15-943c-5c69282c2086",
+    "url": "https://grand-challenge.org/algorithms/baseline-panorama/jobs/4f0b681f-fc2e-4c15-943c-5c69282c2086/",
+    "inputs": [
+      {
+        "pk": 1904079,
+        "file": null,
+        "image": {
+          "pk": "74bc54cc-51c3-4029-b11e-7190b2b0d981",
+          "name": "100403_00001_0000.nii.gz"
+        },
+        "value": null,
+        "interface": {
+          "pk": 103,
+          "kind": "Image",
+          "slug": "venous-phase-ct-scan",
+          "title": "Venous phase CT scan",
+          "super_kind": "Image",
+          "description": "A contrast-enhanced CT scan in the venous phase and axial reconstruction",
+          "default_value": null,
+          "look_up_table": null,
+          "relative_path": "images/venous-ct",
+          "overlay_segments": []
+        }
+      }
+    ],
+    "status": "Succeeded",
+    "api_url": "https://grand-challenge.org/api/v1/algorithms/jobs/4f0b681f-fc2e-4c15-943c-5c69282c2086/",
+    "outputs": [
+      {
+        "pk": 1907995,
+        "file": "https://grand-challenge.org/media/components/componentinterfacevalue/1d/1b/1907995/pdac-likelihood.json",
+        "image": null,
+        "value": null,
+        "interface": {
+          "pk": 474,
+          "kind": "Float",
+          "slug": "pdac-likelihood",
+          "title": "PDAC Likelihood",
+          "super_kind": "File",
+          "description": "This indicates the likelihood of pancreatic ductal adenocarcinoma (PDAC) occurring, presented as a value between 0.0 and 1.0.",
+          "default_value": null,
+          "look_up_table": null,
+          "relative_path": "pdac-likelihood.json",
+          "overlay_segments": []
+        }
+      },
+      {
+        "pk": 1907996,
+        "file": null,
+        "image": {
+          "pk": "9cdc55ac-0720-4626-a190-3f89829d4d2c",
+          "name": "detection_map.mha"
+        },
+        "value": null,
+        "interface": {
+          "pk": 475,
+          "kind": "Heat Map",
+          "slug": "pdac-detection-map",
+          "title": "PDAC Detection Map",
+          "super_kind": "Image",
+          "description": "Single-class, detection map of pancreatic ductal adenocarcinoma (PDAC) in 3D, where each voxel represents a floating point in range [0,1]",
+          "default_value": null,
+          "look_up_table": null,
+          "relative_path": "images/pdac-detection-map",
+          "overlay_segments": []
+        }
+      }
+    ],
+    "started_at": "2024-05-08T05:55:13.494763Z",
+    "completed_at": "2024-05-08T05:58:55.359763Z",
+    "view_content": {},
+    "algorithm_image": "Algorithm image a793f46f-17ec-4e2e-a68e-40832c100986 for Baseline PANORAMA (Baseline v0.4)",
+    "hanging_protocol": null,
+    "rendered_result_text": "",
+    "optional_hanging_protocols": []
+  },
+  {
+    "pk": "504b0a2e-4605-47be-a5b7-b43e7b67e09a",
+    "url": "https://grand-challenge.org/algorithms/baseline-panorama/jobs/504b0a2e-4605-47be-a5b7-b43e7b67e09a/",
+    "inputs": [
+      {
+        "pk": 1904080,
+        "file": null,
+        "image": {
+          "pk": "9af3d3df-b902-4925-a178-8005e43f57eb",
+          "name": "100599_00001_0000.nii.gz"
+        },
+        "value": null,
+        "interface": {
+          "pk": 103,
+          "kind": "Image",
+          "slug": "venous-phase-ct-scan",
+          "title": "Venous phase CT scan",
+          "super_kind": "Image",
+          "description": "A contrast-enhanced CT scan in the venous phase and axial reconstruction",
+          "default_value": null,
+          "look_up_table": null,
+          "relative_path": "images/venous-ct",
+          "overlay_segments": []
+        }
+      }
+    ],
+    "status": "Succeeded",
+    "api_url": "https://grand-challenge.org/api/v1/algorithms/jobs/504b0a2e-4605-47be-a5b7-b43e7b67e09a/",
+    "outputs": [
+      {
+        "pk": 1907999,
+        "file": "https://grand-challenge.org/media/components/componentinterfacevalue/1d/1f/1907999/pdac-likelihood.json",
+        "image": null,
+        "value": null,
+        "interface": {
+          "pk": 474,
+          "kind": "Float",
+          "slug": "pdac-likelihood",
+          "title": "PDAC Likelihood",
+          "super_kind": "File",
+          "description": "This indicates the likelihood of pancreatic ductal adenocarcinoma (PDAC) occurring, presented as a value between 0.0 and 1.0.",
+          "default_value": null,
+          "look_up_table": null,
+          "relative_path": "pdac-likelihood.json",
+          "overlay_segments": []
+        }
+      },
+      {
+        "pk": 1908000,
+        "file": null,
+        "image": {
+          "pk": "01ad75c7-b67c-4998-9969-a52875924858",
+          "name": "detection_map.mha"
+        },
+        "value": null,
+        "interface": {
+          "pk": 475,
+          "kind": "Heat Map",
+          "slug": "pdac-detection-map",
+          "title": "PDAC Detection Map",
+          "super_kind": "Image",
+          "description": "Single-class, detection map of pancreatic ductal adenocarcinoma (PDAC) in 3D, where each voxel represents a floating point in range [0,1]",
+          "default_value": null,
+          "look_up_table": null,
+          "relative_path": "images/pdac-detection-map",
+          "overlay_segments": []
+        }
+      }
+    ],
+    "started_at": "2024-05-08T05:55:11.996130Z",
+    "completed_at": "2024-05-08T05:59:43.876130Z",
+    "view_content": {},
+    "algorithm_image": "Algorithm image a793f46f-17ec-4e2e-a68e-40832c100986 for Baseline PANORAMA (Baseline v0.4)",
+    "hanging_protocol": null,
+    "rendered_result_text": "",
+    "optional_hanging_protocols": []
+  },
+  {
+    "pk": "69549702-e9ca-46ed-bbd7-89def916eb0f",
+    "url": "https://grand-challenge.org/algorithms/baseline-panorama/jobs/69549702-e9ca-46ed-bbd7-89def916eb0f/",
+    "inputs": [
+      {
+        "pk": 1896227,
+        "file": null,
+        "image": {
+          "pk": "f2df199f-97fb-4160-82dc-db396ad7445e",
+          "name": "101381_00001_0000.nii.gz"
+        },
+        "value": null,
+        "interface": {
+          "pk": 103,
+          "kind": "Image",
+          "slug": "venous-phase-ct-scan",
+          "title": "Venous phase CT scan",
+          "super_kind": "Image",
+          "description": "A contrast-enhanced CT scan in the venous phase and axial reconstruction",
+          "default_value": null,
+          "look_up_table": null,
+          "relative_path": "images/venous-ct",
+          "overlay_segments": []
+        }
+      }
+    ],
+    "status": "Succeeded",
+    "api_url": "https://grand-challenge.org/api/v1/algorithms/jobs/69549702-e9ca-46ed-bbd7-89def916eb0f/",
+    "outputs": [
+      {
+        "pk": 1907997,
+        "file": "https://grand-challenge.org/media/components/componentinterfacevalue/1d/1d/1907997/pdac-likelihood.json",
+        "image": null,
+        "value": null,
+        "interface": {
+          "pk": 474,
+          "kind": "Float",
+          "slug": "pdac-likelihood",
+          "title": "PDAC Likelihood",
+          "super_kind": "File",
+          "description": "This indicates the likelihood of pancreatic ductal adenocarcinoma (PDAC) occurring, presented as a value between 0.0 and 1.0.",
+          "default_value": null,
+          "look_up_table": null,
+          "relative_path": "pdac-likelihood.json",
+          "overlay_segments": []
+        }
+      },
+      {
+        "pk": 1907998,
+        "file": null,
+        "image": {
+          "pk": "907eb0f7-eba4-4bb5-8e62-6ff73de90735",
+          "name": "detection_map.mha"
+        },
+        "value": null,
+        "interface": {
+          "pk": 475,
+          "kind": "Heat Map",
+          "slug": "pdac-detection-map",
+          "title": "PDAC Detection Map",
+          "super_kind": "Image",
+          "description": "Single-class, detection map of pancreatic ductal adenocarcinoma (PDAC) in 3D, where each voxel represents a floating point in range [0,1]",
+          "default_value": null,
+          "look_up_table": null,
+          "relative_path": "images/pdac-detection-map",
+          "overlay_segments": []
+        }
+      }
+    ],
+    "started_at": "2024-05-08T05:55:03.933056Z",
+    "completed_at": "2024-05-08T05:59:41.087056Z",
+    "view_content": {},
+    "algorithm_image": "Algorithm image a793f46f-17ec-4e2e-a68e-40832c100986 for Baseline PANORAMA (Baseline v0.4)",
+    "hanging_protocol": null,
+    "rendered_result_text": "",
+    "optional_hanging_protocols": []
+  },
+  {
+    "pk": "8171b49d-bab8-461b-93ef-b8d2fcb23e14",
+    "url": "https://grand-challenge.org/algorithms/baseline-panorama/jobs/8171b49d-bab8-461b-93ef-b8d2fcb23e14/",
+    "inputs": [
+      {
+        "pk": 1904081,
+        "file": null,
+        "image": {
+          "pk": "c8cbb4ed-0f8a-404a-a369-d7aeaa2a5203",
+          "name": "100913_00001_0000.nii.gz"
+        },
+        "value": null,
+        "interface": {
+          "pk": 103,
+          "kind": "Image",
+          "slug": "venous-phase-ct-scan",
+          "title": "Venous phase CT scan",
+          "super_kind": "Image",
+          "description": "A contrast-enhanced CT scan in the venous phase and axial reconstruction",
+          "default_value": null,
+          "look_up_table": null,
+          "relative_path": "images/venous-ct",
+          "overlay_segments": []
+        }
+      }
+    ],
+    "status": "Succeeded",
+    "api_url": "https://grand-challenge.org/api/v1/algorithms/jobs/8171b49d-bab8-461b-93ef-b8d2fcb23e14/",
+    "outputs": [
+      {
+        "pk": 1908001,
+        "file": "https://grand-challenge.org/media/components/componentinterfacevalue/1d/21/1908001/pdac-likelihood.json",
+        "image": null,
+        "value": null,
+        "interface": {
+          "pk": 474,
+          "kind": "Float",
+          "slug": "pdac-likelihood",
+          "title": "PDAC Likelihood",
+          "super_kind": "File",
+          "description": "This indicates the likelihood of pancreatic ductal adenocarcinoma (PDAC) occurring, presented as a value between 0.0 and 1.0.",
+          "default_value": null,
+          "look_up_table": null,
+          "relative_path": "pdac-likelihood.json",
+          "overlay_segments": []
+        }
+      },
+      {
+        "pk": 1908002,
+        "file": null,
+        "image": {
+          "pk": "25c5f034-9215-43cb-9f60-fed1f8f0fd01",
+          "name": "detection_map.mha"
+        },
+        "value": null,
+        "interface": {
+          "pk": 475,
+          "kind": "Heat Map",
+          "slug": "pdac-detection-map",
+          "title": "PDAC Detection Map",
+          "super_kind": "Image",
+          "description": "Single-class, detection map of pancreatic ductal adenocarcinoma (PDAC) in 3D, where each voxel represents a floating point in range [0,1]",
+          "default_value": null,
+          "look_up_table": null,
+          "relative_path": "images/pdac-detection-map",
+          "overlay_segments": []
+        }
+      }
+    ],
+    "started_at": "2024-05-08T05:55:14.447720Z",
+    "completed_at": "2024-05-08T05:59:41.374720Z",
+    "view_content": {},
+    "algorithm_image": "Algorithm image a793f46f-17ec-4e2e-a68e-40832c100986 for Baseline PANORAMA (Baseline v0.4)",
+    "hanging_protocol": null,
+    "rendered_result_text": "",
+    "optional_hanging_protocols": []
+  },
+  {
+    "pk": "9dceaeb8-43a2-42f0-a939-34ed02752ef0",
+    "url": "https://grand-challenge.org/algorithms/baseline-panorama/jobs/9dceaeb8-43a2-42f0-a939-34ed02752ef0/",
+    "inputs": [
+      {
+        "pk": 1896225,
+        "file": null,
+        "image": {
+          "pk": "49eb675e-026a-47c7-a17a-9c4cca869982",
+          "name": "100036_00001_0000.nii.gz"
+        },
+        "value": null,
+        "interface": {
+          "pk": 103,
+          "kind": "Image",
+          "slug": "venous-phase-ct-scan",
+          "title": "Venous phase CT scan",
+          "super_kind": "Image",
+          "description": "A contrast-enhanced CT scan in the venous phase and axial reconstruction",
+          "default_value": null,
+          "look_up_table": null,
+          "relative_path": "images/venous-ct",
+          "overlay_segments": []
+        }
+      }
+    ],
+    "status": "Succeeded",
+    "api_url": "https://grand-challenge.org/api/v1/algorithms/jobs/9dceaeb8-43a2-42f0-a939-34ed02752ef0/",
+    "outputs": [
+      {
+        "pk": 1907993,
+        "file": "https://grand-challenge.org/media/components/componentinterfacevalue/1d/19/1907993/pdac-likelihood.json",
+        "image": null,
+        "value": null,
+        "interface": {
+          "pk": 474,
+          "kind": "Float",
+          "slug": "pdac-likelihood",
+          "title": "PDAC Likelihood",
+          "super_kind": "File",
+          "description": "This indicates the likelihood of pancreatic ductal adenocarcinoma (PDAC) occurring, presented as a value between 0.0 and 1.0.",
+          "default_value": null,
+          "look_up_table": null,
+          "relative_path": "pdac-likelihood.json",
+          "overlay_segments": []
+        }
+      },
+      {
+        "pk": 1907994,
+        "file": null,
+        "image": {
+          "pk": "4b89f2c9-5647-41dc-92e5-a211cde9d3a6",
+          "name": "detection_map.mha"
+        },
+        "value": null,
+        "interface": {
+          "pk": 475,
+          "kind": "Heat Map",
+          "slug": "pdac-detection-map",
+          "title": "PDAC Detection Map",
+          "super_kind": "Image",
+          "description": "Single-class, detection map of pancreatic ductal adenocarcinoma (PDAC) in 3D, where each voxel represents a floating point in range [0,1]",
+          "default_value": null,
+          "look_up_table": null,
+          "relative_path": "images/pdac-detection-map",
+          "overlay_segments": []
+        }
+      }
+    ],
+    "started_at": "2024-05-08T05:49:24.994901Z",
+    "completed_at": "2024-05-08T05:53:37.058901Z",
+    "view_content": {},
+    "algorithm_image": "Algorithm image a793f46f-17ec-4e2e-a68e-40832c100986 for Baseline PANORAMA (Baseline v0.4)",
+    "hanging_protocol": null,
+    "rendered_result_text": "",
+    "optional_hanging_protocols": []
+  }
 ]

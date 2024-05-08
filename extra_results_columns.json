@@ -1,0 +1,4 @@
+[{"path": "AP","order": "dsc","title": "AP"},
+ {"path": "lesion_TPR_at_FPR_01","order": "dsc","title": "Lesion TPR at FPR 0.01"},
+ {"path": "lesion_TPR_at_FPR_001","order": "dsc","title": "Lesion TPR at FPR 0.001"},
+ {"path": "lesion_TPR_at_FPR_0001","order": "dsc","title": "Lesion TPR at FPR 0.0001"}]
