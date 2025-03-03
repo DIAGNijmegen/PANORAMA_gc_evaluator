@@ -44,10 +44,6 @@ from picai_eval import evaluate
 from picai_eval.data_utils import sterilize
 
 
-# INPUT_DIRECTORY = Path("/mnt/c/users/nataliaalves/PANORAMA_gc_evaluator/test/input")
-# OUTPUT_DIRECTORY = Path("/mnt/c/users/nataliaalves/PANORAMA_gc_evaluator/test/output")
-# GROUND_TRUTH_DIRECTORY = Path("/mnt/c/users/nataliaalves/PANORAMA_gc_evaluator/ground_truth")
-
 INPUT_DIRECTORY = Path("/input")
 OUTPUT_DIRECTORY = Path("/output")
 GROUND_TRUTH_DIRECTORY = Path("ground_truth")
